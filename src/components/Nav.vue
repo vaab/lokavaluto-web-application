@@ -40,6 +40,9 @@
             <router-link to="/login" class="button is-light">
               Se connecter
             </router-link>
+            <router-link to="/profile" class="button is-light">
+              Profile
+            </router-link>
           </div>
         </div>
       </div>
