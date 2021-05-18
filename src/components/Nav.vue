@@ -5,9 +5,9 @@
         <img
           class="is-rounded"
           style="max-height:none !important"
-          src="http://monnaie-locale-complementaire-citoyenne.net/wp-content/uploads/2019/07/LogoNational.png"
-          width="80"
-          height="80"
+          src="/src/assets/media/logo-lokavaluto.png"
+          width="150"
+          height="150"
         />
       </router-link>
 
