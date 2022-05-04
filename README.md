@@ -1,76 +1,92 @@
-# Web-app
+# Monujo
 
-## Project setup
+## What is Monujo
+
+Monujo is a wallet app for [local
+currencies](https://en.wikipedia.org/wiki/Local_currency) provided by
+[Lokavaluto](https://lokavaluto.fr/) an association gathering local
+currencies.
+
+It support deploying as a web app or, thanks to
+[capacitor](https://capacitorjs.com/docs) as a mobile phone app
+(android and iOS).
+
+It is a graphical user interface relying on an administrative backend
+(currently [odoo](https://www.odoo.com/), through [lokavaluto's
+addons](https://github.com/Lokavaluto/lokavaluto-addons)) and one or
+several transaction backends (currently supporting
+[com-chain](https://www.com-chain.org/) and
+[cyclos](https://www.cyclos.org/)).
+
+It is written in [typescript](https://www.typescriptlang.org/)
+leveraging [VueJS](https://vuejs.org/) for the GUI and
+[vuex](https://vuex.vuejs.org/) for the reactive store. The
+communication towards the different backends and odoo is abstracted by
+the [lokapi](https://github.com/Lokavaluto/lokapi) library.
+
+## Getting Started
+
+### Project setup
+
+To gather all dependencies to build the app and tools for development
+you need to run the following command:
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Deploying the app for development on computer
+
+The following command transpiles and serve the app with hot-reload
+feature:
 
 ```
 npm run serve
 ```
 
-You'll need to provide a `public/config.json` along the live assets.
-Yon can find an example in `public/config.example.json`.
+You'll need to provide a valid `public/config.json` along the live assets
+to run the app.
 
-### Compiles and minifies for production (web or mobile)
+Yon can find an example in `public/config.sample.json`.
+
+### Building assets for production (web or mobile)
+
+This will compile and produce the final javascript and css files in
+`dist/` from the typescript files in `src/` and assets of the
+`public/` directory.
 
 ```
 npm run build
 ```
 
-This will create `dist` folder with all files needed for the app.
-You'll need to provide a `config.json` along with the release file.
 Note that if you provided a `public/config.json` file prior to running
 the build command, you'll end up having a copy in `dist/config.json`
 along your release file.
 
-You can find an example of a valid config file in
-`public/config.example.json`.
+#### Web deployment
 
-### Lints and fixes files
+When serving these files (on any front-end), you'll need to make sure
+you provided a `config.json` along with the content of the `dist`
+directory.
 
-```
-npm run lint
-```
+You can find an example of a valid configuration file in
+`public/config.sample.json`.
 
-### Customize configuration
+#### Baking the release into a mobile app
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+In order to be able to build the mobile app from the content of the
+`dist/` directory, you will need to follow these instructions first:
 
-# Mobile app
+[capacitor environment setup
+instructions](https://capacitorjs.com/docs/getting-started/environment-setup)
 
-In order to be able to build the mobile app, you will need to follow
-these instructions first:
+Note that the `npm install` command you did to setup the project,
+installs `cap` and `cordova-res` which we will use in the next
+steps. Please note that these commands all accept the platform (`ios`
+or `android`) as first argument, and will ask for it if it can't apply
+to all platform at once.
 
-[capacitor environment setup instructions](https://capacitorjs.com/docs/getting-started/environment-setup)
-
-And download all dependencies:
-
-```
-npm install
-```
-
-This will install `cap` and `cordova-res` which we will use in the
-next steps. Please note that these commands all accept the platform
-(`ios` or `android`) as first argument, and will ask for it if it
-can't apply to all platform at once.
-
-## Build core files
-
-This will compile and produce the final javascript and css files in
-`dist/` from the typescript files in `src/` and assets of the `public/`.
-
-```
-npm run build
-```
-
-Note: if you had a `public/config.json` file setup for development, it'll
-be copied to `dist/config.json` automatically.
-
-## Generating splash screens and icons
+##### Generating splash screens and icons
 
 Put your icon and splash files in `resources/icon.png` and
 `resources/splash.png` respectively (see the files for minimum sizes)
@@ -80,16 +96,16 @@ and then run:
 npx cordova-res --skip-config --copy
 ```
 
-## Theme customization
+##### Customization
 
-You can customize the app's theme by setting properties in the
-`dist/config.json` file (see the `src/assets/custom-variables.scss`
-for a reference of what you can customize).
+We'll need to bake in the `config.json`, so make sure to provide a
+fully configured `dist/config.json` file.
 
-See the `public/config.example.json` for a complete
-example of customizing your theme in the main config file.
+Note that you can theme your app's colors, you might want to check the
+`public/config.sample.json` for a complete example of customizing
+your theme and the main variable.
 
-## Prepare app for build
+##### Sync app folders with the build assets
 
 This will copy the assets from `dist/` folder into the android and iOS
 directories and make sure the platforms have all their needed
@@ -99,7 +115,7 @@ dependencies
 npx cap sync
 ```
 
-## Run in simulator or physical device
+##### Run in simulator or physical device
 
 The following command will prompt you to choose from a list of
 installed simulators or your physical device(s) if connected via USB
@@ -109,7 +125,9 @@ cable and properly set up.
 npx cap run
 ```
 
-## Using full platform specific user interfaces
+You should then be able to test the app.
+
+##### Using full platform specific user interfaces
 
 If you have installed the required studios (graphical user interface),
 you can open it through:
