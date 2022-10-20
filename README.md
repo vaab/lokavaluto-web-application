@@ -1,7 +1,57 @@
-Monujo sources used to build the web-app, and mobile (android, ios) app.
+# Monujo
 
+a wallet app for your local currency. `Monujo` works on your mobile
+and on the web to let you connect to your digital account and spend
+and receive your local complementary currency.
 
-# Requirements
+It hooks to an administrative backend (`odoo` is available), and one
+or more financial backends (`cyclos` and `comchain` are available) to
+provide end-users with a simple interface for their daily use of their
+local complementary currency accounts.
+
+Monujo supports:
+
+- Lookup recipient of payment thanks to the community user directory
+- Send money to any member
+- Top up your account with credit cards
+- Biometric authentication on your device
+
+You'll find here additional information for local complementary
+currency community managers, and developers.
+
+# Install
+
+As an **end user**, your local community should provide you with all the
+resource you need on their own website. If you don't know what you are
+doing, you should probably be better off these pages and should
+probably refer to your local complementary community resources pages.
+
+As **local complementary currency community manager**, you'll find here
+both the mobile app resources to provide to your community and the
+code to deploy on your web server.
+
+## Requirements
+
+On the mobile side, monujo is compatible with:
+
+  - iPhone 6s or SE or later
+  - Android 5.1 or later
+
+On the browser side for the web deployment version, monujo should be
+compatible with most modern web browsers.
+
+## Download
+
+In the release page, you'll find all packages required for the mobile
+deployment (currently only android packages are provided):
+
+[Download the latest package](https://github.com/Lokavaluto/monujo/releases)
+
+Along with the `.tar.bz2` archive file to deploy to your web server.
+
+# Developer Information
+
+## Requirements
 
 Monujo uses
 [browserlist](https://github.com/browserslist/browserslist) to produce
@@ -19,16 +69,18 @@ To build the packages from these current sources, you'll need:
   - for iOS: Xcode 13 or better (requires BigSur)
   - for Android: android SDK 22+ (requires Java 11+)
 
+## Web-app
 
-# Web-app
+The following will give you instructions for getting ready to test and
+code on the web-app version.
 
-## Project setup
+### Project setup
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 
 ```
 npm run serve
@@ -37,7 +89,9 @@ npm run serve
 You'll need to provide a `public/config.json` along the live assets.
 Yon can find an example in `public/config.example.json`.
 
-### Compiles and minifies for production (web or mobile)
+#### Compiles and minifies for production (web or mobile)
+
+Code is transpiled from typescript to compatible javascript by webpack.
 
 ```
 npm run build
@@ -58,11 +112,7 @@ You can find an example of a valid config file in
 npm run lint
 ```
 
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-# Mobile app
+## Mobile app
 
 In order to be able to build the mobile app, you will need to follow
 these instructions first:
@@ -80,7 +130,7 @@ next steps. Please note that these commands all accept the platform
 (`ios` or `android`) as first argument, and will ask for it if it
 can't apply to all platform at once.
 
-## Build core files
+### Build core files
 
 This will compile and produce the final javascript and css files in
 `dist/` from the typescript files in `src/` and assets of the `public/`.
@@ -92,7 +142,7 @@ npm run build
 Note: if you had a `public/config.json` file setup for development, it'll
 be copied to `dist/config.json` automatically.
 
-## Generating splash screens and icons
+### Generating splash screens and icons
 
 Put your icon and splash files in `resources/icon.png` and
 `resources/splash.png` respectively (see the files for minimum sizes)
@@ -102,7 +152,7 @@ and then run:
 npx cordova-res --skip-config --copy
 ```
 
-## Theme customization
+### Theme customization
 
 You can customize the app's theme by setting properties in the
 `dist/config.json` file (see the `src/assets/custom-variables.scss`
@@ -111,7 +161,7 @@ for a reference of what you can customize).
 See the `public/config.example.json` for a complete
 example of customizing your theme in the main config file.
 
-## Prepare app for build
+### Prepare app for build
 
 This will copy the assets from `dist/` folder into the android and iOS
 directories and make sure the platforms have all their needed
@@ -121,7 +171,7 @@ dependencies
 npx cap sync
 ```
 
-## Run in simulator or physical device
+### Run in simulator or physical device
 
 The following command will prompt you to choose from a list of
 installed simulators or your physical device(s) if connected via USB
@@ -131,7 +181,7 @@ cable and properly set up.
 npx cap run
 ```
 
-## Using full platform specific user interfaces
+### Using full platform specific user interfaces
 
 If you have installed the required studios (graphical user interface),
 you can open it through:
@@ -143,7 +193,7 @@ npx cap open
 From there you can sign package, upload to store, etc... the way you
 would do it for any mobile app.
 
-# Translation
+## Translation
 
 By default, the current files are set up to maintain a french
 translation but the translation itself is not stored in the
@@ -152,7 +202,7 @@ repository.
 In the following section you'll get to learn how to add or maintain a
 translation for monujo.
 
-## Preparing for translation in a new language
+### Preparing for translation in a new language
 
 Monujo uses [gettext
 standard](https://en.wikipedia.org/wiki/Gettext). You can create (and
@@ -181,7 +231,7 @@ have a look at [vue3-gettext documentation of
 it](https://jshmrtn.github.io/vue3-gettext/extraction.html#configuration),
 and the defaults we provide in the current code.
 
-## Edit the PO file with the actual translation
+### Edit the PO file with the actual translation
 
 The previous extraction will have made changes to each ``app.po``, you
 must then either fill the missing translation, review the "fuzzy"
@@ -193,7 +243,7 @@ task, or you might have a look at other softwares advertised in
 [gettext
 manual](https://www.gnu.org/software/gettext/manual/gettext.html#Editing).
 
-## Integrating a translated PO to monujo
+### Integrating a translated PO to monujo
 
 Once the PO file is ready (all the new entries were translated and all
 the modified entries were unfuzzied), you need to produce a ``json``
@@ -216,3 +266,60 @@ Each language (except the one listed as ``appStringsLanguage`` require
 it's ``url`` field to be set to the corresponding translation file
 (the ``json`` file). Note that these translation files can be served
 along with the current monujo deployment, or from any other location.
+
+## Build release assets
+
+To build the final assets (signed packages for mobiles and for the web
+app) and optionally create a github release (if you have the
+appropriate rights), you can use `bin/release`.
+
+For that you'll need to install some dependencies:
+
+```bash
+pip install gitchangelog  ## to generate CHANGELOG information from git log
+npm install -g semver     ## install 'semver' utility to sort versions according
+                          ## to semantic versionning
+apt-get install yq jq     ## or use `brew` on macosx
+```
+
+To create the release on github, you'll need `hub`:
+
+```
+apt-get install hub       ## or use `brew` on macosx
+```
+
+### Getting help
+
+```
+$ bin/release --help
+release [-t TAG|--tag TAG] [-f|--force] [-p|--platform PLATFORM]
+
+    ## android build options:
+
+    [-r REV|--rev REV] [-a APP|--app APP]
+    [--keystore-password PASSWORD] [--keystore-password-file FILE]
+    [--keystore FILE]
+
+    ## publish options
+
+    [-P|--publish] [-d|--draft]
+
+```
+
+### Basic usage
+
+```
+bin/release
+```
+
+Will attempt to find the tag of the current commit, and build all the
+assets. If something is missing on the way, you'll be informed by a
+hopefully useful error message.
+
+If you want to build a specific version, for a specific platform, of a
+custom app you can:
+
+```
+bin/release -t 1.0.0-rc.7 -p android -a roue
+```
+
