@@ -12,7 +12,7 @@ msgstr ""
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
-#: src/store/lokapi.ts:349
+#: src/store/lokapi.ts:331
 msgid "%{ nbChar } character"
 msgid_plural "%{ nbChar } characters"
 msgstr[0] "%{ nbChar } caractère"
@@ -69,7 +69,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/TheTransactionList.vue:288
+#: src/components/TheTransactionList.vue:295
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -186,7 +186,7 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TheTransactionList.vue:309
+#: src/components/TheTransactionList.vue:315
 msgid "Date"
 msgstr "Date"
 
@@ -194,7 +194,7 @@ msgstr "Date"
 msgid "Day"
 msgstr "Jour"
 
-#: src/components/TheTransactionList.vue:310
+#: src/components/TheTransactionList.vue:316
 msgid "Description"
 msgstr "Description"
 
@@ -375,23 +375,23 @@ msgstr "Mot de passe"
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: src/store/lokapi.ts:354
+#: src/store/lokapi.ts:336
 msgid "Password must be at least %{ msgSizePassword } long"
 msgstr "Le mot de passe doit faire au moins %{ msgSizePassword }"
 
-#: src/store/lokapi.ts:362
+#: src/store/lokapi.ts:344
 msgid "Password should use at least one digit"
 msgstr "Le mot de passe doit contenir au moins un nombre"
 
-#: src/store/lokapi.ts:358
+#: src/store/lokapi.ts:340
 msgid "Password should use at least one lowercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre minuscule"
 
-#: src/store/lokapi.ts:364
+#: src/store/lokapi.ts:346
 msgid "Password should use at least one symbol"
 msgstr "Le mot de passe doit contenir au moins un caractère spécial"
 
-#: src/store/lokapi.ts:360
+#: src/store/lokapi.ts:342
 msgid "Password should use at least one uppercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 
@@ -536,11 +536,11 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheTransactionList.vue:306
+#: src/components/TheTransactionList.vue:312
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TheTransactionList.vue:307
+#: src/components/TheTransactionList.vue:313
 msgid "Target"
 msgstr "Destination"
 
