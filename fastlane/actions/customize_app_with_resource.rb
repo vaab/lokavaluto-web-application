@@ -59,7 +59,7 @@ module Fastlane
             if shortened_path === ''
               next
             end
-            if ! ["public", "resources"].include? path[0]
+            if ! ["public", "resources", "fastlane"].include? path[0]
               UI.message "  Ignored:         #{shortened_path} ('#{path[0]}' subdir is not whitelisted)."
               next
             end

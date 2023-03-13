@@ -27,12 +27,14 @@ private_lane :_setup_signing do |options|
       keystore_password_file: options[:keystore_password_file],
     )
   when :ios
-    ## Must do it per apps ?
-    if not ENV["APPLE_ID"]
-      UI.user_error! "You must setup the APPLE_ID environment variable."
+    if not(ENV["APP_STORE_CONNECT_API_KEY_KEY_ID"] && 
+            ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"] && 
+            ENV["APP_STORE_CONNECT_API_KEY_KEY"])
+      UI.user_error! "You must setup all of the APP_STORE_CONNECT_API_KEY_KEY_ID, " + 
+                     "APP_STORE_CONNECT_API_KEY_ISSUER_ID, APP_STORE_CONNECT_API_KEY_KEY " + 
+                     "environment variables."
     end
 
-    UI.important "Ignoring step in ios as it seems we need to setup this per app id."
   when :web
     ## Nothing to do
     UI.important "No signing happening for web. Ignoring."
@@ -116,12 +118,12 @@ private_lane :_publish_github do |options|
   send_github options
 end
 
+
 desc "Publish Store"
 private_lane :_publish_store do |options|
   _prepublish options
   send_store options
 end
-
 
 
 desc "Send Github"
@@ -258,7 +260,6 @@ end
 
 
 platform :ios do
-
   lane :build do |options|
     ## Lokavaluto's team id is hard-written here for now
     team_id "25AZX5J5PX"
@@ -274,13 +275,54 @@ platform :ios do
     _publish_store options
   end
 
-  private_lane :send_store do |options|
-    if not ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]
-      UI.user_error! "You must setup your FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD."
+  lane :publish_testflight do |options|
+    options[:testflight] = true
+    publish_store options
+  end
+  
+  lane :upload_app_privacy_details do |options|
+    if ! options[:json_path]
+      options[:json_path] = "fastlane/app_privacy_details.json"
     end
+    _upload_app_privacy_details options
+  end
+
+  private_lane :_app_store_connect do |options|
+    app_store_connect_api_key(
+      duration: 1200, # optional (maximum 1200)
+      in_house: false # optional but may be required if using match/sigh
+    )
+  end
+
+  private_lane :_upload_app_privacy_details do |options|
+    apps = options[:app]
+    data = load_releases_data
+    if apps != "monujo"
+      apps = apps.split(",") if apps
+      apps = data.keys unless apps
+    else
+      apps = ["monujo", ]
+    end
+
+    _app_store_connect
+    for app in apps
+      load_app_data app: app
+
+      upload_app_privacy_details_to_app_store(
+        app_identifier: lane_context[SharedValues::APP_ID],
+        json_path: options[:json_path]
+      )
+    end
+  end 
+
+  private_lane :send_store do |options|
     to_publish.each do |path, label|
       app = "#{path}".split('/')[-1] \
               .split('_')[0]
+
+      # Issue : when a version already exist in App Store Connect,
+      # fastlane increment automatically the version number.
+      # Determine version number to force app_version.
       ## XXXvlab: duplicate transformation for iOS (see version_prepare)
       load_app_data app: app
       app_version = publish_metadata["tag"].gsub(/-rc\.[0-9]+$/, '')
@@ -288,14 +330,29 @@ platform :ios do
                        .split('_')[-1] \
                        .split('.')[0]
 
-      upload_to_testflight(
-        changelog: publish_metadata["changelog"],
-        build_number: build_number,
-        app_version: app_version,
-        app_identifier: lane_context[SharedValues::APP_ID],
-        username: ENV["APPLE_ID"],
-        ipa: path,
-      )
+      _app_store_connect()
+
+      if options[:testflight]
+        upload_to_testflight(
+          changelog: publish_metadata["changelog"],
+          build_number: build_number,
+          app_version: app_version,
+          app_identifier: lane_context[SharedValues::APP_ID],
+          ipa: path,
+        )
+      else
+        appstore(
+          build_number: build_number,
+          app_version: app_version,
+          app_identifier: lane_context[SharedValues::APP_ID],
+          ipa: path,
+
+          reject_if_possible: true,
+          submit_for_review: true,
+          automatic_release: true,
+          primary_category: "Finance"
+        )        
+      end
     end
   end
 
@@ -303,7 +360,8 @@ platform :ios do
   private_lane :prepare_mobile_package do |options|
 
     require 'xcodeproj'
-    project_path = "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/App.xcodeproj"
+    project_root = "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/"
+    project_path = project_root + "App.xcodeproj"
     project = Xcodeproj::Project.open(project_path)
     project.targets.each do |target|
       target.build_configurations.each do |config|
@@ -311,6 +369,9 @@ platform :ios do
       end
     end
     project.save
+
+    plist_path = project_root + "App/Info.plist"
+    set_info_plist_value(path: plist_path, key: "ITSAppUsesNonExemptEncryption", value: "false")
 
     _prepare_mobile_package
   end
@@ -344,7 +405,8 @@ platform :ios do
       UI.message sh('git diff ios', print_command_output: false)
     end
 
-    match(app_identifier: app_id)
+    _app_store_connect()
+    match(type: "appstore", app_identifier: app_id, readonly: true)
 
     build_app(
       workspace: "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/App.xcworkspace",
