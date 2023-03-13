@@ -20,21 +20,17 @@ private_lane :_setup_signing do |options|
   case lane_context[SharedValues::PLATFORM_NAME]
   when :android
     ## Fail early if we don't have required info for signing
-    check_signing_secrets_are_available(
+    check_android_signing_secrets_are_available(
       keystore_base64: options[:keystore_base64],
       keystore_file: options[:keystore_file],
       keystore_password: options[:keystore_password],
       keystore_password_file: options[:keystore_password_file],
     )
   when :ios
-    if not(ENV["APP_STORE_CONNECT_API_KEY_KEY_ID"] && 
-            ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"] && 
-            ENV["APP_STORE_CONNECT_API_KEY_KEY"])
-      UI.user_error! "You must setup all of the APP_STORE_CONNECT_API_KEY_KEY_ID, " + 
-                     "APP_STORE_CONNECT_API_KEY_ISSUER_ID, APP_STORE_CONNECT_API_KEY_KEY " + 
-                     "environment variables."
-    end
-
+    check_ios_signing_secrets_are_available(
+      api_key: options[:api_key],
+      api_key_path: options[:api_key_path],
+    )
   when :web
     ## Nothing to do
     UI.important "No signing happening for web. Ignoring."
@@ -287,12 +283,6 @@ platform :ios do
     _upload_app_privacy_details options
   end
 
-  private_lane :_app_store_connect do |options|
-    app_store_connect_api_key(
-      duration: 1200, # optional (maximum 1200)
-      in_house: false # optional but may be required if using match/sigh
-    )
-  end
 
   private_lane :_upload_app_privacy_details do |options|
     apps = options[:app]
@@ -304,7 +294,6 @@ platform :ios do
       apps = ["monujo", ]
     end
 
-    _app_store_connect
     for app in apps
       load_app_data app: app
 
@@ -405,7 +394,6 @@ platform :ios do
       UI.message sh('git diff ios', print_command_output: false)
     end
 
-    _app_store_connect()
     match(type: "appstore", app_identifier: app_id, readonly: true)
 
     build_app(
