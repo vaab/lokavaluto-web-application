@@ -76,6 +76,10 @@ msgstr "Tous les destinataires"
 msgid "All transactions"
 msgstr "Toutes les opérations"
 
+#: src/views/Signup.vue:104
+msgid "Already have an account ?"
+msgstr "Avez-vous déjà créé un compte ?"
+
 #: src/components/MoneyTransferModal.vue:147
 #: src/components/TheTransactionList.vue:383
 #: src/views/admin/PendingCredits.vue:52
@@ -165,7 +169,7 @@ msgstr ""
 msgid "Approve"
 msgstr "Valider"
 
-#: src/views/Login.vue:198
+#: src/views/Login.vue:197
 msgid "Ask me later"
 msgstr "Plus tard"
 
@@ -177,7 +181,7 @@ msgstr "Authentification"
 msgid "Biometric login successfully disabled"
 msgstr "Identification biométrique désactivée"
 
-#: src/views/Login.vue:230
+#: src/views/Login.vue:229
 msgid "Biometric login successfully set up"
 msgstr "Identification biométrique mise en place"
 
@@ -202,7 +206,11 @@ msgstr "Configurer le code PIN"
 msgid "confirm"
 msgstr "valider"
 
-#: src/views/Login.vue:153
+#: src/views/Signup.vue:80
+msgid "Confirm password"
+msgstr "Confirmez votre mot de passe"
+
+#: src/views/Login.vue:152
 msgid "Connection successful"
 msgstr "Connection réussie"
 
@@ -263,6 +271,7 @@ msgid "Edits were successfully saved"
 msgstr "Modifications enregistrées"
 
 #: src/views/Login.vue:16 src/views/ResetPassword.vue:23
+#: src/views/Signup.vue:26
 msgid "Email"
 msgstr "Courriel"
 
@@ -275,7 +284,7 @@ msgstr "Courriel envoyé"
 msgid "email, phone"
 msgstr "adresse mail, téléphone"
 
-#: src/views/Login.vue:191
+#: src/views/Login.vue:190
 msgid "Enable biometric login"
 msgstr "Activer le login biométrique"
 
@@ -290,6 +299,10 @@ msgstr "Échec de l'authentification. Veuillez ré-essayer."
 #: src/components/MoneyCreditModal.vue:163
 msgid "Finalize order from your account"
 msgstr "Compléter la transaction dans mon espace personnel"
+
+#: src/views/Signup.vue:39
+msgid "Firstname"
+msgstr "Prénom"
 
 #: src/components/AuthPref.vue:22
 msgid "for account %{ name }"
@@ -311,13 +324,17 @@ msgstr "Les codes PINs entrés ne sont pas identiques"
 msgid "Help"
 msgstr "Aide"
 
-#: src/views/Login.vue:165
+#: src/views/Login.vue:164
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
 #: src/main.ts:223
 msgid "Language settings"
 msgstr "Préférences de langue"
+
+#: src/views/Signup.vue:52
+msgid "Lastname"
+msgstr "Nom"
 
 #: src/components/MoneyTransferModal.vue:373
 msgid "Later"
@@ -359,7 +376,7 @@ msgstr "Crédit mutuel"
 msgid "Next"
 msgstr "Suivant"
 
-#: src/views/Login.vue:197
+#: src/views/Login.vue:196
 msgid "No"
 msgstr "Non"
 
@@ -406,7 +423,7 @@ msgid "Operation canceled"
 msgstr "Opération annulée"
 
 #: src/components/CreateAccount.vue:81 src/components/CreateAccount.vue:93
-#: src/views/Login.vue:37
+#: src/views/Login.vue:37 src/views/Signup.vue:66
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -476,6 +493,14 @@ msgstr ""
 "vous enverrons un e-mail avec des instructions pour réinitialiser votre mot "
 "de passe."
 
+#: src/views/Signup.vue:12
+msgid ""
+"Please fill in all the required fields below and click on Signup to create "
+"your account."
+msgstr ""
+"Veuillez remplir les champs ci-dessous et cliquer sur le bouton Inscription "
+"pour créer votre compte."
+
 #: src/components/CreateAccount.vue:65
 msgid ""
 "Please note that this password can not be retrieved, so be sure to keep it "
@@ -508,11 +533,11 @@ msgstr "Rafraîchir le solde et les transactions"
 msgid "Request"
 msgstr "Recevoir"
 
-#: src/views/Login.vue:169
+#: src/views/Login.vue:168
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
-#: src/views/Login.vue:159
+#: src/views/Login.vue:158
 msgid "Request refused by remote server. Contact your administrator"
 msgstr "Refus du serveur distant, contactez votre administrateur"
 
@@ -582,7 +607,7 @@ msgstr "Se connecter"
 msgid "Sign out"
 msgstr "Déconnexion"
 
-#: src/views/Login.vue:66
+#: src/views/Login.vue:66 src/views/Signup.vue:92
 msgid "Sign up"
 msgstr "Créer un compte"
 
@@ -617,6 +642,11 @@ msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 #: src/components/MoneyCreditModal.vue:209
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
+
+#: src/views/Signup.vue:133
+msgid "The password and the password confirmation must be equal."
+msgstr ""
+"Le mot de passe et la confirmation du mot de passe doivent être identiques."
 
 #: src/components/CreateAccount.vue:54
 msgid ""
@@ -692,13 +722,14 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
-#: src/views/Login.vue:223
+#: src/views/Login.vue:222
 msgid "Unexpected issue occurred while saving your credentials"
 msgstr ""
 "Une erreur inattendue est survenue pendant l'enregistrement de vos "
 "identifiants"
 
-#: src/views/Login.vue:172 src/views/ResetPassword.vue:74
+#: src/views/Login.vue:171 src/views/ResetPassword.vue:74
+#: src/views/Signup.vue:150
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -730,6 +761,10 @@ msgstr "Utilisateur"
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
 
+#: src/views/Signup.vue:148
+msgid "User or email already exist."
+msgstr "Utilisateur ou e-mail existe déjà."
+
 #: src/components/CreateAccount.vue:297
 msgid "Wallet already created"
 msgstr "Compte déjà créé"
@@ -746,7 +781,7 @@ msgstr "Compte à créditer"
 msgid "week"
 msgstr "semaine"
 
-#: src/views/Login.vue:192
+#: src/views/Login.vue:191
 msgid ""
 "Would you like to use your device's biometric (fingerprint, face "
 "recognition, ...) capability to login ?"
@@ -758,7 +793,7 @@ msgstr ""
 msgid "year"
 msgstr "année"
 
-#: src/views/Login.vue:196
+#: src/views/Login.vue:195
 msgid "Yes"
 msgstr "Oui"
 
@@ -786,6 +821,10 @@ msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 #: src/components/TheBankAccountList.vue:45
 msgid "You don't have any wallet yet,"
 msgstr "Vous n'avez pas encore de portefeuille,"
+
+#: src/views/Signup.vue:161
+msgid "Your account has been created successfully."
+msgstr "Votre compte a été créé avec succès."
 
 #: src/components/TheBankAccountList.vue:56
 msgid "your accounts"
