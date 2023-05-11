@@ -89,6 +89,18 @@ module Fastlane
         end
 
         resolution = (params[:resolution] || ENV["SCREENSHOT_RESOLUTION"] || "").split(",")
+
+        platform = Actions.lane_context[SharedValues::PLATFORM_NAME]
+        case platform
+        when :android
+          resolution = ("375x667,1080x810").split(",") if resolution.length == 0
+        when :ios
+          resolution = ("430x932x3,428x926x3,414x736x3,1024x1366x2").split(",") if resolution.length == 0
+        else
+          ## No default value
+          UI.important "No default value for screenshoit resolution. Ignoring."
+        end
+
         resolution = screenshot_config["resolutions"] if resolution.length == 0
         if ! resolution || resolution.length == 0
           UI.user_error! "Please specify a screenshot resolution."
@@ -188,7 +200,7 @@ module Fastlane
       end
 
       def self.is_supported?(platform)
-        [:android].include?(platform)
+        [:android, :ios].include?(platform)
       end
     end
   end
