@@ -48,6 +48,14 @@ import AuthChallengePin from "@/components/AuthChallengePin.vue"
 
 import Loading from "./plugins/loading"
 
+import {
+  ActionPerformed,
+  PushNotificationSchema,
+  PushNotifications,
+  Token,
+} from "@capacitor/push-notifications"
+import { Capacitor } from "@capacitor/core"
+
 // Assets
 
 import FontAwesomeIcon from "@/utils/fonts"
@@ -293,6 +301,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.config.globalProperties.$appInfo = { appName, appVersion }
   app.config.globalProperties.$modal = modal
   app.config.globalProperties.$passwordUtils = passwordUtils
+    app.config.globalProperties.$push = {} 
   const unwatch = store.watch(
     (state, getters) => getters.isAuthenticated,
     () => {
@@ -306,4 +315,48 @@ fetchConfig("config.json").then(async (config: any) => {
   // be allowed to fail.
   store.dispatch("switchLocale")
   store.dispatch("setupAfterLogin")
+
+  const platform = Capacitor.getPlatform()
+  if (platform !== "web") {
+    PushNotifications.requestPermissions().then((result) => {
+      if (result.receive === "granted") {
+        // Register with Apple / Google to receive push via APNS/FCM
+        PushNotifications.register()
+        ToastService.info('Push registration granted');
+      } else {
+          throw Error("Failed to get permission to notification system")
+      }
+
+
+    })
+
+    // On success, we should be able to receive notifications
+    PushNotifications.addListener('registration',
+      (token: Token) => {
+          ToastService.info('Push registration success, token: ' + token.value);
+          app.config.globalProperties.$push.token = token
+      }
+    );
+
+    // Some issue with our setup and push will not work
+    PushNotifications.addListener('registrationError',
+      (error: any) => {
+        ToastService.error('Error on registration: ' + JSON.stringify(error));
+      }
+    );
+
+    // Show us the notification payload if the app is open on our device
+    PushNotifications.addListener('pushNotificationReceived',
+      (notification: PushNotificationSchema) => {
+        ToastService.info('Push received: ' + JSON.stringify(notification));
+      }
+    );
+
+    // Method called when tapping on a notification
+    PushNotifications.addListener('pushNotificationActionPerformed',
+      (notification: ActionPerformed) => {
+        ToastService.info('Push action performed: ' + JSON.stringify(notification));
+      }
+    );
+  }
 })

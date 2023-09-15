@@ -83,6 +83,9 @@
           </p>
         </form>
       </div>
+      <div>
+        XXX: {{ $push.token.value }}
+        </div>
     </div>
     <router-view></router-view>
   </section>

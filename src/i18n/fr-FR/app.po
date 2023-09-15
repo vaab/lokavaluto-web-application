@@ -355,7 +355,7 @@ msgstr "Identifiant ou mot de passe incorrect"
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
-#: src/main.ts:223
+#: src/main.ts:231
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -367,7 +367,7 @@ msgstr "Nom"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:105
+#: src/main.ts:113
 msgid "Log in"
 msgstr "Se connecter"
 
@@ -375,11 +375,11 @@ msgstr "Se connecter"
 msgid "Login"
 msgstr "Connection"
 
-#: src/main.ts:104
+#: src/main.ts:112
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:133
+#: src/main.ts:141
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -399,7 +399,7 @@ msgstr "Montant minimum à créditer : "
 msgid "month"
 msgstr "mois"
 
-#: src/main.ts:131
+#: src/main.ts:139
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -563,7 +563,7 @@ msgstr ""
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:130
+#: src/main.ts:138
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -613,7 +613,7 @@ msgstr "Ré-initialiser le mot de passe"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:194
+#: src/main.ts:202
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
