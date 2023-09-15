@@ -13,6 +13,8 @@ import mkStore from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { prefsStoreFactory } from "./store/prefs"
 import PasswordUtilsFactory from "./utils/password"
+import { pushNotificationStoreFactory } from "./store/pushNotification"
+
 // Services
 
 import {
@@ -35,7 +37,7 @@ import { LokAPI } from "./services/lokapiService"
 import mkGettext from "./services/Gettext"
 
 import UseModal from "./services/UseModal"
-import PushNotification from "./services/PushNotification"
+import PushNotificationService from "./services/PushNotificationService"
 
 // Components
 
@@ -258,6 +260,24 @@ fetchConfig("config.json").then(async (config: any) => {
   )
   store.registerModule("prefs", prefsStoreFactory(prefsService))
 
+  const pushNotificationService = new PushNotificationService(lokApiService)
+  pushNotificationService
+    .onNotificationReceived((notification): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        ToastService.info(notification.body)
+      })
+    })
+    .onRegistration((token: string): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        console.log(token)
+      })
+    })
+
+  store.registerModule(
+    "pushNotification",
+    pushNotificationStoreFactory(pushNotificationService)
+  )
+
   const app = createApp(App)
   app.config.errorHandler = function (err: any, vm, info) {
     if (err instanceof UIError) {
@@ -309,15 +329,5 @@ fetchConfig("config.json").then(async (config: any) => {
   store.dispatch("switchLocale")
   store.dispatch("setupAfterLogin")
 
-  const pushNotification = new PushNotification({
-    register(token: string) {
-      console.log(token)
-
-      return true
-    },
-    onNotificationReceived(notification) {
-      ToastService.info(notification.body)
-    },
-  })
-  pushNotification.init()
+  store.dispatch("initPushNotification")
 })

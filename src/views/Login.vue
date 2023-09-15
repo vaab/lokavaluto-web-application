@@ -118,6 +118,9 @@
         (await this.getHasBiometricCredentialsAvailable()) &&
         (await this.requestBiometricAuthentication())
     },
+    async unmounted() {
+      this.$store.dispatch("registerAccountsForPushNotification")
+    },
     methods: {
       onClickSignUp() {
         this.$config.signUpUrl
