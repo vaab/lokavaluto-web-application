@@ -6,9 +6,10 @@ import PushNotificationService, {
 
 enum pushNotificationState {
   OnError,
-  UnSupported,
-  UnAuthorized,
+  Unsupported,
+  Unauthorized,
   Initialized,
+  Pending,
   AccountsRegistered,
 }
 
@@ -18,12 +19,12 @@ export function pushNotificationStoreFactory(
   return {
     state: {
       token: "",
-      storeState: pushNotificationState.UnSupported,
+      storeState: pushNotificationState.Unsupported,
     },
     actions: {
       async initPushNotification({ commit, state }: any) {
         try {
-          pushNotificationService.onRegistration(
+          pushNotificationService.onRegistrationDo(
             (token: string): Promise<void> => {
               return new Promise((resolve, reject) => {
                 commit("setToken", token)
@@ -36,10 +37,10 @@ export function pushNotificationStoreFactory(
         } catch (e) {
           if (e instanceof UnSupportedNotificationException) {
             console.log(e.message)
-            commit("setStoreState", pushNotificationState.UnSupported)
+            commit("setStoreState", pushNotificationState.Unsupported)
           } else if (e instanceof UnAuthorizedNotificationException) {
             console.log(e.message)
-            commit("setStoreState", pushNotificationState.UnAuthorized)
+            commit("setStoreState", pushNotificationState.Unauthorized)
           } else {
             console.error(e)
             commit("setStoreState", pushNotificationState.OnError)
@@ -52,16 +53,19 @@ export function pushNotificationStoreFactory(
         rootGetters,
         state,
       }: any) {
-          if (state.storeState === pushNotificationState.Initialized) {
-              await dispatch("fetchAccounts")
-              const accounts = rootGetters.activeVirtualAccounts
-              await Promise.all(accounts.map(
-                  (account: any) => pushNotificationService.registerAccountForPushNotification(
-                      account.id,
-                      state.token
-                  )
-              ))
-              commit("setStoreState", pushNotificationState.AccountsRegistered)
+        if (state.storeState >= pushNotificationState.Initialized) {
+          commit("setStoreState", pushNotificationState.Pending)
+          await dispatch("fetchAccounts")
+          const accounts = rootGetters.activeVirtualAccounts
+          await Promise.all(
+            accounts.map((account: any) =>
+              pushNotificationService.registerAccountForPushNotification(
+                account.id,
+                state.token
+              )
+            )
+          )
+          commit("setStoreState", pushNotificationState.AccountsRegistered)
         }
       },
     },
@@ -75,10 +79,10 @@ export function pushNotificationStoreFactory(
     },
     getters: {
       getToken(state: any) {
-          return state.token
+        return state.token
       },
       getStoreState(state: any) {
-          return state.storeState
+        return state.storeState
       },
     },
   }

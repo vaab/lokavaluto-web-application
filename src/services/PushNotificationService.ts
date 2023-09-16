@@ -77,14 +77,14 @@ export default class PushNotificationService {
     await PushNotifications.register()
   }
 
-  public onNotificationReceived(
+  public onNotificationReceivedDo(
     callback: (data: any) => Promise<void>
   ): PushNotificationService {
     this.onNotificationReceivedActions.push(callback)
     return this
   }
 
-  public onRegistration(
+  public onRegistrationDo(
     callback: (data: any) => Promise<void>
   ): PushNotificationService {
     this.onRegistrationActions.push(callback)

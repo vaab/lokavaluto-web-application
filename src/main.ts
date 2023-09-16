@@ -262,12 +262,12 @@ fetchConfig("config.json").then(async (config: any) => {
 
   const pushNotificationService = new PushNotificationService(lokApiService)
   pushNotificationService
-    .onNotificationReceived((notification): Promise<void> => {
+    .onNotificationReceivedDo((notification): Promise<void> => {
       return new Promise((resolve, reject) => {
         ToastService.info(notification.body)
       })
     })
-    .onRegistration((token: string): Promise<void> => {
+    .onRegistrationDo((token: string): Promise<void> => {
       return new Promise((resolve, reject) => {
         console.log(token)
       })
