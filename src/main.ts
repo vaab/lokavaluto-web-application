@@ -260,17 +260,19 @@ fetchConfig("config.json").then(async (config: any) => {
   )
   store.registerModule("prefs", prefsStoreFactory(prefsService))
 
-  const pushNotificationService = new PushNotificationService(lokApiService)
+    const pushNotificationService = new PushNotificationService(
+        async (account: any, token: any) => {
+            if (account.registerForPushNotification) {
+                await account.registerForPushNotification(token)
+            }
+        }
+    )
   pushNotificationService
-    .onNotificationReceivedDo((notification): Promise<void> => {
-      return new Promise((resolve, reject) => {
+    .onNotificationReceivedDo(async (notification): Promise<void> => {
         ToastService.info(notification.body)
-      })
     })
-    .onRegistrationDo((token: string): Promise<void> => {
-      return new Promise((resolve, reject) => {
+    .onRegistrationDo(async (token: string): Promise<void> => {
         console.log(token)
-      })
     })
 
   store.registerModule(

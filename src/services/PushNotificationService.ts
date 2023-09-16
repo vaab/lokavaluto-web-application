@@ -10,10 +10,10 @@ import { error } from "console"
 export default class PushNotificationService {
   private onRegistrationActions: ((token: string) => Promise<void>)[] = []
   private onNotificationReceivedActions: ((data: any) => Promise<void>)[] = []
-    private registerTokenFn: (token: string) => void
+    public registerAccountForPushNotification: (account: any, token: string) => Promise<void>
 
-  constructor(registerTokenFn: any) {
-    this.registerTokenFn = registerTokenFn
+  constructor(registerAccountForPushNotification: any) {
+    this.registerAccountForPushNotification = registerAccountForPushNotification
   }
 
   public async init(): Promise<void> {
@@ -95,23 +95,9 @@ export default class PushNotificationService {
     callbacks: ((param: any) => Promise<void>)[],
     param: any
   ) {
-    for (const callback of callbacks) {
-      callback(param)
-    }
+      return Promise.all(callbacks.map((callback: any) => callback(param)))
   }
 
-  public async registerAccountForPushNotification(
-    accountUrl: string,
-    token: string
-  ) {
-    try {
-      console.log("registering " + accountUrl + " " + token)
-      //ToDo in LokaAPI
-      //this.lokAPI.registerAccountForPushNotification(accountUrl, token)
-    } catch (e) {
-      //ToDo
-    }
-  }
 }
 
 export class UnAuthorizedNotificationException extends Error {
