@@ -130,7 +130,7 @@ msgstr ""
 
 #: src/components/TransactionListModal.vue:342
 #: src/components/TransactionListModal.vue:399
-#: src/components/TransactionListRecent.vue:135
+#: src/components/TransactionListRecent.vue:108
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -210,7 +210,7 @@ msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
 "validation de portefeuilles"
 
-#: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:89
+#: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:90
 #: src/components/TheDashboardFooter.vue:102
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""

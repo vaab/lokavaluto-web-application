@@ -1,5 +1,5 @@
 <template>
-  <div class="card custom-card custom-card-padding">
+  <div class="card custom-card custom-card-padding transaction-list">
     <span
       :class="{
         hide: !isTransactionsLoading,
@@ -9,6 +9,7 @@
       <fa-icon :class="{ refreshing: isTransactionsLoading }" icon="sync" />
     </span>
     <PendingTopUp
+      data-testid="pending-topup"
       :account="account"
       :refreshToggle="refreshToggle"
       @triggerTransactionRefresh="trigger"
@@ -30,6 +31,20 @@
 
   import { mapModuleState } from "@/utils/vuex"
 
+  let timeout: any
+
+  function clearRefresh() {
+    if (timeout) {
+      clearInterval(timeout)
+      timeout = null
+    }
+  }
+
+  function setupRefresh(fn: () => void, ms: number) {
+    clearRefresh()
+    timeout = setInterval(fn, ms)
+  }
+
   @Options({
     name: "TheTransactionList",
     components: {
@@ -49,11 +64,29 @@
       ...mapModuleState("lokapi", ["transactionsLoading", "lastTransactions"]),
     },
     mounted() {
+      this.setRefreshIfNeeded()
       console.log("TransactionList", this.account)
     },
+    unmounted() {
+      clearRefresh()
+    },
+
     methods: {
       trigger(value: boolean) {
         this.isTransactionsLoading = value
+      },
+
+      setRefreshIfNeeded() {
+        const transactionsRefreshInterval =
+          this.$config.transactionsRefreshInterval || 90
+        if (transactionsRefreshInterval != -1) {
+          setupRefresh(
+            () => {
+              this.refreshToggle = !this.refreshToggle
+            },
+            transactionsRefreshInterval
+          )
+        }
       },
     },
   })
